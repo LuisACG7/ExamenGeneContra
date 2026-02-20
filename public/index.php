@@ -4,11 +4,17 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Src\Controllers\PasswordController;
 use Src\Controllers\QRController;
+use Src\Controllers\UrlController; 
 
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: GET, POST");
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = str_replace('/index.php', '', $uri); 
+$uri = rtrim($uri, '/');
 $method = $_SERVER['REQUEST_METHOD'];
+
 
 try {
 
@@ -36,6 +42,23 @@ try {
 
     elseif ($uri === '/api/qr/types' && $method === 'GET') {
         (new QRController())->types();
+    }
+
+    // ========= URL SHORTENER API =========
+
+    elseif ($uri === '/api/shorten' && $method === 'POST') {
+        $data = json_decode(file_get_contents("php://input"), true);
+        (new UrlController())->shorten($data);
+    }
+
+    elseif (preg_match('#^/api/stats/([a-zA-Z0-9]+)$#', $uri, $matches) && $method === 'GET') {
+        (new UrlController())->stats($matches[1]);
+    }
+
+    // ========= REDIRECT =========
+
+    elseif (preg_match('#^/([a-zA-Z0-9]{6})$#', $uri, $matches) && $method === 'GET') {
+        (new UrlController())->redirect($matches[1]);
     }
 
     // ========= 404 =========
