@@ -1,5 +1,5 @@
 <?php
-namespace Controllers;
+namespace Src\Controllers;
 
 use Services\PasswordService;
 use Core\Response;
