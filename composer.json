@@ -1,0 +1,10 @@
+{
+    "require": {
+        "endroid/qr-code": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/"
+        }
+    }
+}
