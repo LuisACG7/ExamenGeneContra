@@ -1,8 +1,9 @@
 <?php
+
 namespace Src\Controllers;
 
-use Services\PasswordService;
-use Core\Response;
+use Src\Services\PasswordService;
+use Src\Core\Response;
 
 class PasswordController {
 
@@ -37,11 +38,14 @@ class PasswordController {
 
         if (!isset($data['password']) || !isset($data['requirements'])) {
             Response::json(["error" => "Datos incompletos"], 400);
+            return;
         }
 
-        $result = $this->service->validate($data['password'], $data['requirements']);
+        $result = $this->service->validate(
+            $data['password'],
+            $data['requirements']
+        );
 
         Response::json($result);
     }
-
 }
